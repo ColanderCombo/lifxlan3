@@ -68,6 +68,24 @@ def animate(filename: str, *, center: bool = False, sleep_secs: float = .75, in_
         sleep(sleep_secs)
 
 
+def translate(filename: str, *, sleep_secs: float = .5, in_terminal=False, size=RC(16, 16)):
+    """move right"""
+    cm = ColorMatrix.from_filename(filename)
+    color_map = _get_color_replacements(filename)
+    cm = cm.split()[0]
+
+    def _gen_offset():
+        while True:
+            for _c_offset in range(size.c * 2):
+                yield size.c - _c_offset - 1
+
+    for c_offset in _gen_offset():
+        cm.replace(color_map)
+        cm.wrap = True
+        set_cm(cm, offset=RC(0, c_offset), size=size, in_terminal=in_terminal)
+        sleep(sleep_secs)
+
+
 @timer
 def set_cm(cm: ColorMatrix, offset=RC(0, 0), size=RC(16, 16), in_terminal=False, with_mini=True):
     orig_cm = cm = cm.strip().get_range(RC(0, 0) + offset, size + offset)
@@ -113,26 +131,37 @@ def _cmp_colors(idx_colors_map):
     print()
 
 
-# images
-# link.png
-# link_all.png
-# m_small.png
-# maniac_bernard.png
-# maniac_heads.png
-# mario.png
-# mm.png
-# mm_walk.png
-# punch_out_lm.png
-# punch_out_mike.png
-# zelda_blue_octorock.png
-# zelda_enemies.png
-# zelda_ghosts.png
-# zelda_red_octorock.png
+images = [
+    'crono.png',
+    'crono_magus.png',
+    'ff4_cecil.png',
+    'ff4_rydia.png',
+    'ff4_tellah.png',
+    'ff6_edgar.png',
+    'ff6_locke.png',
+    'ff6_locke_full.png',
+    'ff6_sabin.png',
+    'link.png',
+    'link_all.png',
+    'lttp_link.png',
+    'maniac_bernard.png',
+    'maniac_heads.png',
+    'mario.png',
+    'mario_kart_koopa.png',
+    'mm.png',
+    'mm_walk.png',
+    'm_small.png',
+    'punch_out_lm.png',
+    'punch_out_mike.png',
+    'zelda_blue_octorock.png',
+    'zelda_enemies.png',
+    'zelda_ghosts.png',
+    'zelda_red_octorock.png']
 
 
 def __main():
     # return id_tiles(get_tile_chain(), rotate=True)
-    return animate('./imgs/lttp_link.png', in_terminal=True)
+    return translate('./imgs/link_all.png', in_terminal=True)
     return animate('./imgs/maniac_bernard.png')
 
 

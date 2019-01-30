@@ -3,7 +3,7 @@ from contextlib import suppress
 from functools import lru_cache
 from itertools import islice, cycle, groupby
 from types import SimpleNamespace
-from typing import List, NamedTuple, Tuple, Dict, Optional, Type
+from typing import List, NamedTuple, Tuple, Dict, Optional, Type, Callable, Iterable
 
 from PIL import Image
 
@@ -41,6 +41,9 @@ class RC(NamedTuple):
     def __mod__(self, other) -> 'RC':
         return RC(self[0] % other[0], self[1] % other[1])
 
+    def __rmod__(self, other) -> 'RC':
+        return self % other
+
     def __divmod__(self, other) -> Tuple['RC', 'RC']:
         return self // other, self % other
 
@@ -50,11 +53,11 @@ class TileInfo(NamedTuple):
     origin: RC
 
 
-tile_map: Dict[RC, TileInfo] = {RC(1, 1): TileInfo(2, RC(0, 1)),
-                                RC(1, 0): TileInfo(1, RC(0, 1)),
-                                RC(0, 1): TileInfo(3, RC(1, 0)),
-                                RC(2, -1): TileInfo(0, RC(0, 0)),
-                                RC(0, 0): TileInfo(4, RC(0, 0))}
+tile_map: Dict[RC, TileInfo] = {RC(1, 1): TileInfo(2, RC(0, 0)),
+                                RC(1, 0): TileInfo(1, RC(0, 0)),
+                                RC(0, 1): TileInfo(3, RC(0, 0)),
+                                RC(2, -1): TileInfo(0, RC(1, 1)),
+                                RC(0, 0): TileInfo(4, RC(1, 0))}
 
 
 class DupesValids(NamedTuple):
@@ -66,13 +69,11 @@ class DupesValids(NamedTuple):
     v: frozenset
 
     @property
-    @lru_cache()
     def first_valid(self):
         """return first valid value"""
         return min(self.v)
 
     @property
-    @lru_cache()
     def last_valid(self):
         """return last valid value"""
         return max(self.v)
@@ -87,10 +88,22 @@ class DupesValids(NamedTuple):
         return [(v[0][0], v[-1][1]) for v in valids]
 
 
+_sentinel = object()
+
+
 class ColorMatrix(List[List[Color]]):
     """represent Colors in a 2d-array form that allows for easy setting of TileChain lights"""
 
+    def __init__(self, lst: Iterable = _sentinel, *, wrap=False):
+        if lst is _sentinel:
+            super().__init__()
+        else:
+            super().__init__(lst)
+        self.wrap = wrap
+
     def __getitem__(self, item):
+        if self.wrap and isinstance(item, RC):
+            item %= self.shape
         if isinstance(item, tuple):
             r, c = item
             return self[r][c]
@@ -215,6 +228,7 @@ class ColorMatrix(List[List[Color]]):
                 for r_start, r_end in row_info.by_group
                 for c_start, c_end in col_info.by_group]
 
+    # todo: handle passing on `wrap` flag when creating new object? or, just set global default or something...
     def get_range(self, rc0, rc1, default: Color = default_color) -> 'ColorMatrix':
         """create new ColorMatrix from existing existing CM from the box bounded by rc0, rc1"""
         shape = rc1 - rc0
@@ -295,13 +309,16 @@ class ColorMatrix(List[List[Color]]):
 
     @property
     def describe(self) -> str:
-        colors = self.flattened
-        d = sorted(Counter(colors).items(), key=lambda kv: kv[1], reverse=True)
+        """
+        return a histogram string of sorts showing colors and a visual representation
+        of how much of that color is present in the image
+        """
+        d = sorted(Counter(self.flattened).items(), key=lambda kv: -kv[1])
         return '\n'.join(f'{str(c):>68}: {c.color_str(" " * count, set_bg=True)}' for c, count in d)
 
-    def cast(self, converter: Type) -> 'ColorMatrix':
+    def cast(self, converter: Callable) -> 'ColorMatrix':
         """
-        cast individual colors using the converter (probably Color or RGBk)
+        cast individual colors using the converter callable
         """
         return ColorMatrix([converter(c) for c in row] for row in self)
 
