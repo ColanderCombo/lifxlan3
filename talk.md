@@ -1,0 +1,89 @@
+- for_talk.py
+- original API
+- lights as groups
+	- originally:
+		- a bunch of repeated code
+		- not pythonic
+	- new groups code:
+		- implements `LightAPI` (groups can act as lights)
+		- group.py
+			- _call_on_lights decorator
+			- _GetFromLights descriptor
+			- reset_to_orig context manager
+			- pythonic usage:
+				- __getitem__/autogroup
+				- __add__
+		- * show video setting all lights to one color for 5 seconds then returning to normal
+- colors/themes:
+	- originally just naked 4-tuples (like, if you saw (65535, 42182, 37292, 2850) what would you think?)
+	- now, pretty sweet:
+		- Color/RGBk NamedTuples
+			- HSBk - but on lifx scale, not usual HSB values
+			- interplay between RGBk and Color
+			- color_str
+			- __add__ colors together (average them - challenging!)
+		- Themes:
+			- map of colors to weights
+			- can apply to groups of lights using these weights, randomly distributing colors from the theme
+				- fun at xmas time
+			- * run `python3 cli.py info -c` (colors in terminal and themes represented in an easy to see way)
+			- can add colors and themes together
+		- metaclasses to make life easier
+		- * show video (cycle-themes with one theme)
+	
+- keyboard control using getch
+	- keyboard_utils.py
+	- read and map raw getch bytes to chars
+		- state machine
+		- light-eq dir map
+	- problems with blocking interpreter - separate process
+	- * run `python3 cli.py getch-test`
+
+- cli.py:
+	- uses click, pretty cool lib by the guy who created flask
+	- * run `python3 cli.py`
+	- * run `python3 cli.py light-eq --help`
+	- sample code
+
+
+- routines:
+	- * show video: morse-code
+	- * show video: point-eq
+
+- tiles
+	- 2x2 grid of 8x8 tiles (+ additional 5th tile)
+	- RC/ColorMatrix
+		- CM inherits from a typing construct
+	- how to id tiles/rotations
+		- * show images of id'ing tiles
+	- how to read in images:
+		- using pillow
+		- splitting/stripping elements
+		- rotation in general
+	- converting images to multiple tiles
+	- RC is pretty pythonic
+	- splitting/displaying images
+	- * run animate examples in the terminal
+	- * run translate
+	- * show video of animation of tellah sprite
+	
+
+- snek
+	- play snake on tile lights
+	- built on a ton of things i'd already come across
+		- messages sent easily in multple threads
+		- handling keyboard inputs
+		- color_str to play in terminal
+		- fix for creating tile message: improved speed by 3 orders of magnitude.
+	- snek.py
+		- snek: best datastructure: sneque
+		- snekgame: event loop
+		- * play in terminal
+	- autosnek
+		- a* pathfinding algo
+		- adjust to allow wrapping around
+		- won't work till complete success due to inability to deal with changing landscapes
+			- hamiltonian circuit would work
+		- * show in terminal
+		- * show video of autosnek
+	
