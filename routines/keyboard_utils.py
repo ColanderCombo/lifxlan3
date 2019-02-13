@@ -70,8 +70,6 @@ def parse_keyboard_inputs(char_map: Optional[Dict[int, Any]] = None, *, separate
     some inputs, however, are multiple bytes, together at once.
     consider pressing 'up', it appears as [0x1b, 0x5b, 0x41], which is in fact [ESC, '[', 'A']]
     the below handles that by using some sort of state machine as represented by `tree`
-
-    NOTE: set `separate_process` to True if you're having trouble with multithreading and getch
     """
 
     char_map = char_map or {}

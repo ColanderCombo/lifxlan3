@@ -301,11 +301,31 @@ def explode(base_color: Color = Colors.STEELERS_RED,
     set_cm(cm, strip=False, duration_msec=3000)
 
 
-def __main():
-    g = AutoSnekGame(shape=RC(16, 16), tick_rate_secs=.01,
+def play_snek():
+    g = SnekGame(shape=RC(16, 16), tick_rate_secs=.05,
+                 callbacks=Callbacks(terminal_tick, on_death, on_success),
+                 background_color=Colors.SNES_LIGHT_GREY, snek_color=Colors.COPILOT_BLUE_GREEN,
+                 food_color=Colors.SNES_LIGHT_PURPLE, snek_growth_amount=2)
+    g.run()
+
+
+def auto_play_snek():
+    g = AutoSnekGame(shape=RC(16, 16), tick_rate_secs=.03,
                      callbacks=Callbacks(terminal_tick, on_death, on_success),
                      background_color=Colors.SNES_LIGHT_GREY, snek_color=Colors.COPILOT_BLUE_GREEN,
                      food_color=Colors.SNES_LIGHT_PURPLE, snek_growth_amount=2)
+    g.run()
+
+
+def __main():
+    g = AutoSnekGame(shape=RC(16, 23), tick_rate_secs=.03,
+                     callbacks=Callbacks(terminal_tick, on_death, on_success),
+                     background_color=Colors.SNES_LIGHT_GREY, snek_color=Colors.COPILOT_BLUE_GREEN,
+                     food_color=Colors.SNES_LIGHT_PURPLE, snek_growth_amount=2)
+    # g = SnekGame(shape=RC(16, 16), tick_rate_secs=.05,
+    #              callbacks=Callbacks(terminal_tick, on_death, on_success),
+    #              background_color=Colors.SNES_LIGHT_GREY, snek_color=Colors.COPILOT_BLUE_GREEN,
+    #              food_color=Colors.SNES_LIGHT_PURPLE, snek_growth_amount=2)
     # g = SnekGame(shape=RC(16, 16), tick_rate_secs=.05,
     #              callbacks=Callbacks(lights_cb, on_death, on_success, lights_intro),
     #              background_color=Colors.OFF, snek_color=Colors.GREEN)

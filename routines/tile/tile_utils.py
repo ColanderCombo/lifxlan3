@@ -339,7 +339,7 @@ class ColorMatrix(List[List[Color]]):
         of how much of that color is present in the image
         """
         d = sorted(Counter(self.flattened).items(), key=lambda kv: -kv[1])
-        return '\n'.join(f'{str(c):>68}: {c.color_str(" " * count, set_bg=True)}' for c, count in d)
+        return '\n'.join(f'{str(c):>68}: {c.color_str(" " * count, set_bg=True)}|' for c, count in d)
 
     def cast(self, converter: Callable) -> 'ColorMatrix':
         """

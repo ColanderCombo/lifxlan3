@@ -1,3 +1,4 @@
+import os
 from contextlib import suppress
 from functools import lru_cache
 from itertools import count
@@ -65,6 +66,8 @@ def animate(filename: str, *, center: bool = False, sleep_secs: float = .75, in_
         log.info('.')
         c_offset = 0 if not center else max(0, ceil(cm.width / 2 - 8))
         cm.replace(color_map)
+        if in_terminal:
+            os.system('clear')
         set_cm(cm, offset=RC(0, c_offset), size=size, in_terminal=in_terminal)
         sleep(sleep_secs)
 
@@ -88,6 +91,8 @@ def translate(filename: str, *, sleep_secs: float = .5, in_terminal=False,
     for c_offset in _gen_offset():
         cm.replace(color_map)
         cm.wrap = True
+        if in_terminal:
+            os.system('clear')
         set_cm(cm, offset=RC(0, c_offset), size=size, in_terminal=in_terminal)
         sleep(sleep_secs)
 
@@ -171,8 +176,8 @@ images = [
 
 def __main():
     # return id_tiles(rotate=False)
-    return animate('./imgs/mm_walk.png', sleep_secs=1)
-    return translate('./imgs/ff4_tellah.png', split=False, dir=Dir.left, sleep_secs=.1, n_iterations=4)
+    return animate('./imgs/ff4_tellah.png', sleep_secs=1, in_terminal=True)
+    # return translate('./imgs/ff4_tellah.png', split=False, dir=Dir.left, sleep_secs=.1, n_iterations=4)
     return animate('./imgs/mm_walk.png', sleep_secs=4, in_terminal=False)
     return animate('./imgs/maniac_bernard.png')
 

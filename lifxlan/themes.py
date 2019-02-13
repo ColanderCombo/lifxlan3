@@ -100,10 +100,10 @@ class ThemesMeta(type):
     def __getitem__(cls, item):
         return cls.__dict__[item]
 
-    def get(cls, val, item=None):
-        if val in cls.__dict__:
-            return cls[val]
-        return item
+    def get(cls, item, default=None):
+        if item in cls.__dict__:
+            return cls[item]
+        return default
 
 
 class Themes(metaclass=ThemesMeta):
