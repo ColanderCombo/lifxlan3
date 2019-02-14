@@ -64,7 +64,7 @@
 	- RC is pretty pythonic
 	- splitting/displaying images
 	- _run_ animate examples in the terminal
-	- _run_ translate
+	- _run_ translate examples in the terminal
 	- _show_ video of animation of tellah sprite
 	
 
@@ -84,6 +84,6 @@
 		- adjust to allow wrapping around
 		- won't work till complete success due to inability to deal with changing landscapes
 			- hamiltonian circuit would work
-		- _show_ in terminal
+		- _play_ in terminal
 		- _show_ video of autosnek
 	

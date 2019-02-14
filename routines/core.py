@@ -152,6 +152,10 @@ def __main():
     # fireworks(lifx)
     # waveforms(lifx, Waveform.pulse, Colors.SNES_DARK_PURPLE, Colors.PYTHON_LIGHT_BLUE, skew_ratio=.3)
     lifx = lifx['living_room'] + lifx['kitchen'] + lifx['dining_room']
+    with lifx.reset_to_orig():
+        lifx.set_color(Colors.YALE_BLUE)
+        sleep(3)
+    return
     fireworks(lifx)
     # lifx.turn_on()
     # sleep(3)
