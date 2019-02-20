@@ -15,6 +15,7 @@
 #   - represent timer progress on light strip
 # - set images on tile
 #   - website to upload images to tile
+# - otomatone integration (hat tip: josh)
 
 # x document usage - change README.md
 # x powerful repl? (won't do: just use jupyter console)

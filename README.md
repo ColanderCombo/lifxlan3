@@ -40,14 +40,14 @@ from time import sleep
 lifx = LifxLAN()  # `lifx` is a `Group` representing all lights
 
 # can add groups and individual lights together
-lifx = lifx['kitchen'] + lifx['living room 1']
+group = lifx['kitchen'] + lifx['living room 1']
 
 # will restore group's original settings when complete
-with lifx.reset_to_orig():
+with group.reset_to_orig():
 
     # can combine themes and colors
-    lifx.set_theme(Themes.snes + Themes.xmas + Colors.PYTHON_LIGHT_BLUE)  # weird theme, but ok
-    lifx.turn_on()
+    group.set_theme(Themes.snes + Themes.xmas + Colors.PYTHON_LIGHT_BLUE)  # weird theme, but ok
+    group.turn_on()
     sleep(8)
 ```
 
