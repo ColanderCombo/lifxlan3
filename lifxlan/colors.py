@@ -62,7 +62,6 @@ class Color(NamedTuple):
     @_replace
     def r_hue(self, val):
         """replace hue"""
-        pass
 
     @_replace
     def r_saturation(self, val):

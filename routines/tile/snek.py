@@ -343,7 +343,7 @@ def auto_play_snek():
 
 
 def __main():
-    g = AutoSnekGame(shape=RC(16, 23), tick_rate_secs=.03,
+    g = AutoSnekGame(shape=RC(21, 47), tick_rate_secs=.03,
                      callbacks=Callbacks(terminal_tick, on_death, on_success),
                      background_color=Colors.SNES_LIGHT_GREY, snek_color=Colors.COPILOT_BLUE_GREEN,
                      food_color=Colors.SNES_LIGHT_PURPLE, snek_growth_amount=2)
@@ -354,13 +354,13 @@ def __main():
     # g = SnekGame(shape=RC(16, 16), tick_rate_secs=.05,
     #              callbacks=Callbacks(lights_cb, on_death, on_success, lights_intro),
     #              background_color=Colors.OFF, snek_color=Colors.GREEN)
-    time.sleep(5)
-    g = AutoSnekGame(shape=RC(16, 16), tick_rate_secs=.05,
-                     callbacks=Callbacks(lights_tick, on_death, on_success, lights_intro),
-                     snek_color=Colors.GREEN,
-                     # snek_color=Themes.july_4th,
-                     background_color=Colors.SNES_DARK_GREY._replace(brightness=6554),
-                     food_color=Colors.YALE_BLUE)
+    # time.sleep(5)
+    # g = AutoSnekGame(shape=RC(16, 16), tick_rate_secs=.03,
+    #                  callbacks=Callbacks(terminal_tick, on_death, on_success, lights_intro),
+    #                  snek_color=Colors.GREEN,
+    #                  # snek_color=Themes.july_4th,
+    #                  background_color=Colors.SNES_DARK_GREY._replace(brightness=6554),
+    #                  food_color=Colors.YALE_BLUE)
     g.run()
 
 

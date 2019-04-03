@@ -185,7 +185,7 @@ def for_talk():
 def __main():
     # return for_talk()
     # return id_tiles(rotate=False)
-    return animate('./imgs/ff4_tellah.png', sleep_secs=1)
+    return animate('./imgs/ff4_tellah.png', sleep_secs=1, in_terminal=True)
     # return translate('./imgs/ff4_tellah.png', split=False, dir=Dir.left, sleep_secs=.1, n_iterations=4)
     return animate('./imgs/mm_walk.png', sleep_secs=4, in_terminal=False)
     return animate('./imgs/maniac_bernard.png')
